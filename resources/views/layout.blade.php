@@ -36,7 +36,7 @@
             </li>
 
             <li>
-                <a href="/register" class="hover:text-laravel"
+                <a href="/listing/manage" class="hover:text-laravel"
                 ><i class="fa-solid fa-gear"></i> Manage Gigs</a
                 >
             </li>
