@@ -8,11 +8,14 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+
+    // Return create user form view
     public function create()
     {
         return view('users.create');
     }
 
+    // Validate and store user
     public function store()
     {
         $formFields = request()->validate([
@@ -31,11 +34,13 @@ class UserController extends Controller
         return redirect('/')->with('success', 'User created and logged in!');
     }
 
+    // Return login user form view
     public function login()
     {
         return view('users.login');
     }
 
+    // Logout user
     public function logout()
     {
         request()->session()->invalidate();
@@ -45,6 +50,7 @@ class UserController extends Controller
         return redirect('/')->with('success', 'User logged out!');
     }
 
+    // Validate and login user
     public function authenticate()
     {
         $formFields = request()->validate([

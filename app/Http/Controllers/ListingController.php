@@ -2,30 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Listings;
+use App\Models\Listing;
 use Illuminate\Http\Request;
 
 class ListingController extends Controller
 {
+
+    // Return home page view
     public function index()
     {
         return view('listings.index', [
-            'listings' => Listings::latest()->filter(request(['tag', 'search']))->paginate(6)
+            'listings' => Listing::latest()->filter(request(['tag', 'search']))->paginate(6)
         ]);
     }
 
-    public function show(Listings $listing)
+    // Return listing single page view
+    public function show(Listing $listing)
     {
         return view('listings.show', [
             'listing' => $listing
         ]);
     }
 
+    // Return create listing form view
     public function create()
     {
         return view('listings.create');
     }
 
+    // Validate and create listing
     public function store()
     {
         $formFields = request()->validate([
@@ -43,17 +48,19 @@ class ListingController extends Controller
 
         $formFields['user_id'] = auth()->id();
 
-        Listings::create($formFields);
+        Listing::create($formFields);
 
         return redirect('/')->with('success', 'Listing created!');
     }
 
-    public function edit(Listings $listing)
+    // Return edit listing form view
+    public function edit(Listing $listing)
     {
         return view('listings.edit', ['listing' => $listing]);
     }
 
-    public function update(Listings $listing)
+    // Validate and update listing
+    public function update(Listing $listing)
     {
         if($listing->user_id != auth()->id()) {
             abort(403, 'Unauthorized action.');
@@ -77,7 +84,8 @@ class ListingController extends Controller
         return back()->with('success', 'Listing updated!');
     }
 
-    public function destroy(Listings $listing)
+    // Delete listing
+    public function destroy(Listing $listing)
     {
         if($listing->user_id != auth()->id()) {
             abort(403, 'Unauthorized action.');
@@ -88,6 +96,7 @@ class ListingController extends Controller
         return redirect('/')->with('success', 'Listing deleted!');
     }
 
+    // Return manage listings view
     public function manage()
     {
         return view('listings.manage', ['listings' => auth()->user()->listings()->get()]);
